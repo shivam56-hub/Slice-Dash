@@ -1,0 +1,181 @@
+/* es. Before touching the JSX, let's decide a complete visual system for the Pizza Delivery app so every page feels consistent.
+
+I recommend a modern dark + warm pizza theme rather than a generic red/white food-app design.
+
+🎨 Overall theme
+Element	Choice
+Main background	#0F1115
+Secondary background	#171A21
+Card background	#1D212B
+Primary accent	#FF6B35 🍕
+Secondary accent	#FFC857
+Main text	#F5F5F5
+Secondary text	#A7ADB8
+Borders	#2A2F3A
+Success/Veg	#32D583
+Error/Non-veg	#FF4D4F
+
+The orange/yellow combination gives it a food/pizza feel without making the entire website bright red.
+
+Navbar
+
+I'd use:
+
+Background: #171A21
+Text:       #F5F5F5
+Hover:      #FF6B35
+Active:     #FFC857
+
+Navbar should have a slightly transparent dark background + blur:
+
+background: rgba(23, 26, 33, 0.85);
+backdrop-filter: blur(12px);
+
+And a subtle bottom border:
+
+border-bottom: 1px solid #2A2F3A;
+✨ Animations
+
+Keep animations subtle, not flashy.
+
+Navbar links
+
+Normal:
+
+color → white
+
+Hover:
+
+color → orange
+
+with:
+
+transition: color 0.25s ease;
+
+We can also add a small underline animation:
+
+────────
+
+that grows from left → right on hover.
+
+Buttons
+
+Normal:
+
+Orange
+
+Hover:
+
+slightly brighter orange
++ tiny upward movement
+
+Something like:
+
+transform: translateY(-2px);
+
+with:
+
+transition: all 0.25s ease;
+
+No excessive bouncing/glowing.
+
+🍕 Pizza cards
+
+Cards:
+
+#1D212B
+
+On hover:
+
+translateY(-6px)
+slightly stronger shadow
+
+Example:
+
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+This will make the pizza cards feel interactive.
+
+🖼️ Images
+
+Pizza images should have:
+
+object-fit: cover;
+
+and slightly rounded corners.
+
+On card hover, we can make the image scale very slightly:
+
+1.00 → 1.04
+
+Not too much.
+
+📝 Typography
+
+I'd use:
+
+Inter or Poppins.
+
+For this type of app, I'd choose Poppins because it gives the food app a slightly more friendly feel.
+
+Hierarchy:
+
+Page heading     → bold
+Card title       → semi-bold
+Normal text      → regular
+Secondary text   → muted gray
+Price            → yellow/orange
+🔘 Buttons
+
+Primary:
+
+background: #FF6B35
+text:       #FFFFFF
+
+Secondary:
+
+background: transparent
+border: 1px solid #FF6B35
+text: #FF6B35
+
+Hover:
+
+background → #FF7A4D
+transform → translateY(-2px)
+📱 Mobile
+
+We'll make the whole application responsive.
+
+For mobile:
+
+Desktop
+Navbar links → horizontal
+
+Mobile
+Navbar links → hamburger menu
+
+Pizza cards:
+
+Desktop → 3/4 columns
+Tablet  → 2 columns
+Mobile  → 1 column
+Overall visual direction
+
+Think:
+
+┌──────────────────────────────────────┐
+│ 🍕 Pizza Delivery     Pizzas Cart ...│
+├──────────────────────────────────────┤
+│                                      │
+│        GOOD PIZZA. GOOD MOOD.        │
+│                                      │
+│       [ Explore Pizzas ]              │
+│                                      │
+│   ┌────────┐ ┌────────┐ ┌────────┐  │
+│   │ 🍕     │ │ 🍕     │ │ 🍕     │  │
+│   │ Pizza  │ │ Pizza  │ │ Pizza  │  │
+│   └────────┘ └────────┘ └────────┘  │
+│                                      │
+└──────────────────────────────────────┘
+
+Dark background + orange primary + yellow highlights + white typography + subtle animations. */

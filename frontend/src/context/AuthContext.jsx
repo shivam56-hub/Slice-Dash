@@ -1,0 +1,39 @@
+import React, { createContext, useContext, useState } from 'react';
+
+const AuthContext = createContext(null);
+
+export function AuthProvider({ children }) {
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
+  const login = (newToken) => {
+    localStorage.setItem("token", newToken);
+    setToken(newToken);
+  };
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+  };
+
+  const isLoggedIn = !!token;
+
+  return (
+    <AuthContext.Provider
+      value={{
+        token,
+        login,
+        logout,
+        isLoggedIn,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
+// 4. Custom hook to consume the Context
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+}
