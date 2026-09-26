@@ -42,7 +42,7 @@ export default function Footer() {
     <footer className="footer-section">
       <div className="footer-container">
         <div className="footer-info">
-          <h2>🍕 Pizza Delivery</h2>
+          <h2>SliceDash 🍕</h2>
           <p>Fresh pizza delivered straight to your door.</p>
           <div className="social-links">
             <a

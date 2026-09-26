@@ -58,130 +58,173 @@ export default function Checkout() {
       [name]: value,
     });
   };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   console.log("Delivery Address:", address);
+
+  //   try {
+  //     const token = localStorage.getItem("token");
+
+  //     if (!token) {
+  //       alert("Please login first.");
+  //       return;
+  //     }
+
+  //     // Load Razorpay Checkout
+  //     const razorpayLoaded = await loadRazorpay();
+
+  //     if (!razorpayLoaded) {
+  //       alert("Razorpay SDK failed to load.");
+  //       return;
+  //     }
+
+  //     // Create Razorpay order
+  //     const response = await fetch(
+  //       "http://localhost:5000/api/payment/create-order",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //         body: JSON.stringify({
+  //           amount: totalAmount,
+  //         }),
+  //       },
+  //     );
+
+  //     const data = await response.json();
+
+  //     if (!response.ok) {
+  //       throw new Error(data.message || "Failed to create payment order");
+  //     }
+
+  //     console.log("Razorpay Order:", data.order);
+  //     const options = {
+  //       key: "YOUR_RAZORPAY_KEY_ID",
+  //       amount: data.order.amount,
+  //       currency: data.order.currency,
+  //       name: "Pizza Delivery",
+  //       description: "Pizza Order",
+  //       order_id: data.order.id,
+
+  //       handler: async function (response) {
+  //         try {
+  //           const token = localStorage.getItem("token");
+
+  //           const verifyResponse = await fetch(
+  //             "http://localhost:5000/api/payment/verify",
+  //             {
+  //               method: "POST",
+  //               headers: {
+  //                 "Content-type": "application/json",
+  //                 Authorization: `Bearer ${token}`,
+  //               },
+  //               body: JSON.stringify({
+  //                 razorpay_order_id: response.razorpay_order_id,
+  //                 razorpay_payment_id: response.razorpay_payment_id,
+  //                 razorpay_signature: response.razorpay_signature,
+  //               }),
+  //             },
+  //           );
+  //           const verifyData = await verifyResponse.json();
+  //           if (!verifyResponse.ok) {
+  //             throw new Error(
+  //               verifyData.message || "Payment verification failed",
+  //             );
+  //           }
+  //           console.log("Payment verified:", verifyData);
+
+  //           // alert("Payment verified successfully 🎉");
+  //           const orderResponse = await fetch(
+  //             "http://localhost:5000/api/orders/after-payment",
+  //             {
+  //               method: "POST",
+  //               headers: {
+  //                 "Content-Type": "application/json",
+  //                 Authorization: `Bearer ${token}`,
+  //               },
+  //               body: JSON.stringify({
+  //                 deliveryAddress: address,
+  //                 razorpayOrderId: response.razorpay_order_id,
+  //                 razorpayPaymentId: response.razorpay_payment_id,
+  //               }),
+  //             },
+  //           );
+  //           const orderData = await orderResponse.json();
+  //           if (!orderResponse.ok) {
+  //             throw new Error(orderData.message || "Failed to create order");
+  //           }
+  //           console.log("Order created: ", orderData);
+  //           alert("Order placed successfully 🎉");
+
+  //           // using navigate
+  //           navigate("/orders");
+  //         } catch (error) {
+  //           console.error("Verification error:", error);
+  //           alert(error.message);
+  //         }
+  //       },
+  //       prefill: {
+  //         name: address.fullname,
+  //         contact: address.phone,
+  //       },
+
+  //       theme: {
+  //         color: "#3399cc",
+  //       },
+  //     };
+  //     const razorpay = new window.Razorpay(options);
+  //     razorpay.open();
+  //   } catch (error) {
+  //     console.error("Payment error:", error);
+  //     alert(error.message);
+  //   }
+  // };
+  
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    console.log("Delivery Address:", address);
+  try {
+    const token = localStorage.getItem("token");
 
-    try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        alert("Please login first.");
-        return;
-      }
-
-      // Load Razorpay Checkout
-      const razorpayLoaded = await loadRazorpay();
-
-      if (!razorpayLoaded) {
-        alert("Razorpay SDK failed to load.");
-        return;
-      }
-
-      // Create Razorpay order
-      const response = await fetch(
-        "http://localhost:5000/api/payment/create-order",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            amount: totalAmount,
-          }),
-        },
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to create payment order");
-      }
-
-      console.log("Razorpay Order:", data.order);
-      const options = {
-        key: "YOUR_RAZORPAY_KEY_ID",
-        amount: data.order.amount,
-        currency: data.order.currency,
-        name: "Pizza Delivery",
-        description: "Pizza Order",
-        order_id: data.order.id,
-
-        handler: async function (response) {
-          try {
-            const token = localStorage.getItem("token");
-
-            const verifyResponse = await fetch(
-              "http://localhost:5000/api/payment/verify",
-              {
-                method: "POST",
-                headers: {
-                  "Content-type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                  razorpay_order_id: response.razorpay_order_id,
-                  razorpay_payment_id: response.razorpay_payment_id,
-                  razorpay_signature: response.razorpay_signature,
-                }),
-              },
-            );
-            const verifyData = await verifyResponse.json();
-            if (!verifyResponse.ok) {
-              throw new Error(
-                verifyData.message || "Payment verification failed",
-              );
-            }
-            console.log("Payment verified:", verifyData);
-
-            // alert("Payment verified successfully 🎉");
-            const orderResponse = await fetch(
-              "http://localhost:5000/api/orders/after-payment",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                  deliveryAddress: address,
-                  razorpayOrderId: response.razorpay_order_id,
-                  razorpayPaymentId: response.razorpay_payment_id,
-                }),
-              },
-            );
-            const orderData = await orderResponse.json();
-            if (!orderResponse.ok) {
-              throw new Error(orderData.message || "Failed to create order");
-            }
-            console.log("Order created: ", orderData);
-            alert("Order placed successfully 🎉");
-
-            // using navigate
-            navigate("/orders");
-          } catch (error) {
-            console.error("Verification error:", error);
-            alert(error.message);
-          }
-        },
-        prefill: {
-          name: address.fullname,
-          contact: address.phone,
-        },
-
-        theme: {
-          color: "#3399cc",
-        },
-      };
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
-    } catch (error) {
-      console.error("Payment error:", error);
-      alert(error.message);
+    if (!token) {
+      alert("Please login first.");
+      return;
     }
-  };
+
+    const response = await fetch(
+      "http://localhost:5000/api/orders",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          deliveryAddress: address,
+          paymentMethod: "Cash",
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to place order");
+    }
+
+    console.log("Order created:", data);
+
+    alert("Order placed successfully 🎉");
+
+    navigate("/orders");
+  } catch (error) {
+    console.error("Order error:", error);
+    alert(error.message);
+  }
+};
   const loadRazorpay = () => {
     return new Promise((resolve) => {
       const script = document.createElement("script");
@@ -307,7 +350,7 @@ return (
           </div>
 
           <button type="submit" className="form-btn">
-            Continue to Payment →
+            Place Order 🛍️
           </button>
 
         </form>
@@ -327,10 +370,11 @@ return (
             {items.map((item) => (
               <div
                 className="summary-item"
-                key={`${item.pizza}-${item.size}`}
+                key={`${item.pizza?._id}-${item.size}`}
               >
                 <div>
-                  <h3>{item.name || "Pizza"}</h3>
+                  {/* <h3>{item.name || "Pizza"}</h3> */}
+                  <h3>{item.pizza?.name || "Pizza"}</h3>
                   <p>
                     {item.size} × {item.quantity}
                   </p>
@@ -360,8 +404,11 @@ return (
             </div>
           </div>
 
-          <div className="secure-payment">
+          {/* <div className="secure-payment">
             🔒 Secure payment powered by Razorpay
+          </div> */}
+          <div className="secure-payment">
+             💵 Cash on Delivery • Pay when your order arrives
           </div>
 
         </div>

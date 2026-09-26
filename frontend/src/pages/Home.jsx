@@ -32,7 +32,7 @@ export default function Home() {
       <section className="home-hero">
         <div className="home-container">
           <p className="hero-small-title">FRESH • HOT • DELICIOUS</p>
-          <h1>Welcome to pizzas Delivery🍕</h1>
+          <h1>Welcome to SliceDash🍕</h1>
 
           <p className="hero-description">
             Freshly baked pizzas delivered straight to your door.

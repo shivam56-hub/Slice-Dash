@@ -8,7 +8,7 @@
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 28px 24px;
+  padding: 28px 55px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -66,7 +66,7 @@
 .footer-link {
   color: #c9cdd5;
   text-decoration: none;
-  font-size: 1.02rem;
+  font-size: 1.2rem;
   transition: color 0.25s ease;
 }
 
@@ -78,7 +78,7 @@
   border-top: 1px solid #20242e;
   text-align: center;
   color: #6f7683;
-  font-size: 0.82rem;
+  font-size: 0.92rem;
   padding: 14px 20px;
 }
 

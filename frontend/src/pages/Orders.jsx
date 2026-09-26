@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import "../styles/Orders.css";
+import "../styles/Orders.css"
 
 export default function Orders() {
   const { token, isLoggedIn } = useAuth();
@@ -52,57 +52,57 @@ export default function Orders() {
   }
 
   return (
-    <div className="order-card">
-      <div className="order-header">
+    <div className="order-section">
+      <div className="order-heading">
         <h1>My Orders 📦</h1>
         <p>Track and view your recent orders</p>
-        <div className="orders">
-          {orders.map((order) => (
-            <div className="order-card" key={order._id}>
-              <div className="order-header">
-                <div>
-                  <p className="order-label">Order ID</p>
-                  <h3>#{order._id.slice(-8)}</h3>
-                </div>
+      </div>
 
-                <span
-                  className={`order-status ${order.orderStatus?.toLowerCase()}`}
-                >
-                  {order.orderStatus}
-                </span>
+      <div className="orders">
+        {orders.map((order) => (
+          <div className="order-card" key={order._id}>
+            <div className="order-header">
+              <div>
+                <p className="order-label">Order ID</p>
+                <h3>#{order._id.slice(-8)}</h3>
               </div>
+              <span
+                className={`order-status ${order.orderStatus?.toLowerCase()}`}
+              >
+                {order.orderStatus}
+              </span>
+            </div>
 
-              <div className="order-items">
-                {order.item.map((item) => (
-                  <div className="order-item" key={item._id}>
-                    <div className="item-info">
-                      <h4>{item.name}</h4>
-                      <p>
-                        {item.size} × {item.quantity}
-                      </p>
-                    </div>
-
-                    <span className="item-price">
-                      ₹{item.price * item.quantity}
-                    </span>
+            <div className="order-items">
+              {order.items.map((item) => (
+                <div className="order-item" key={item._id}>
+                  <div className="item-info">
+                    <h4>{item.name}</h4>
+                    <p>
+                      {item.size} × {item.quantity}
+                    </p>
                   </div>
-                ))}
+
+                  <span className="item-price">
+                    ₹{item.price * item.quantity}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div className="order-footer">
+              <div>
+                <span>Payment</span>
+                <strong>{order.paymentStatus}</strong>
               </div>
 
-              <div className="order-footer">
-                <div>
-                  <span>Payment</span>
-                  <strong>{order.paymentStatus}</strong>
-                </div>
-
-                <div className="order-total">
-                  <span>Total</span>
-                  <strong>₹{order.totalAmount}</strong>
-                </div>
+              <div className="order-total">
+                <span>Total</span>
+                <strong>₹{order.totalAmount}</strong>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );
