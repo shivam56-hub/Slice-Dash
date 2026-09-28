@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import "../styles/Orders.css"
+import "../styles/Orders.css";
 
 export default function Orders() {
   const { token, isLoggedIn } = useAuth();
@@ -65,6 +65,13 @@ export default function Orders() {
               <div>
                 <p className="order-label">Order ID</p>
                 <h3>#{order._id.slice(-8)}</h3>
+                <p className="order-date">
+                  {new Date(order.createdAt).toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </p>
               </div>
               <span
                 className={`order-status ${order.orderStatus?.toLowerCase()}`}
@@ -92,10 +99,18 @@ export default function Orders() {
 
             <div className="order-footer">
               <div>
-                <span>Payment</span>
-                <strong>{order.paymentStatus}</strong>
+                <span>Payment Method</span>
+                <strong>
+                  {order.paymentMethod === "Cash"
+                    ? "Cash on Delivery"
+                    : order.paymentMethod}
+                </strong>
               </div>
 
+              <div>
+                <span>Payment Status</span>
+                <strong>{order.paymentStatus}</strong>
+              </div>
               <div className="order-total">
                 <span>Total</span>
                 <strong>₹{order.totalAmount}</strong>

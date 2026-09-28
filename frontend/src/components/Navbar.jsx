@@ -4,7 +4,8 @@ import { useAuth } from "../context/AuthContext";
 import "../styles/Navbar.css";
 
 export default function Navbar() {
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, user } = useAuth();
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -35,36 +36,52 @@ export default function Navbar() {
           <span className="bar"></span>
         </button>
         <div className={`navbar-links ${isOpen ? "active" : ""}`}>
-          <Link to="/" className="nav-link" onClick={closeMenu}>
-            Home
-          </Link>
-          <Link to="/pizzas" className="nav-link" onClick={closeMenu}>
-            Pizzas
-          </Link>
-          {isLoggedIn && (
+          {user?.role === "Admin" ? (
             <>
-              <Link to="/cart" className="nav-link" onClick={closeMenu}>
-                Cart
+              <Link to="/admin" className="nav-link" onClick={closeMenu}>
+                Dashboard
               </Link>
-              <Link to="/orders" className="nav-link" onClick={closeMenu}>
-                Order
-              </Link>
-              <Link to="/contact" className="nav-link" onClick={closeMenu}>
-                Contact
+              <Link to="/admin/orders" className="nav-link" onClick={closeMenu}>
+                Orders
               </Link>
               <button onClick={handleLogout} className="nav-button">
                 Logout
               </button>
             </>
-          )}
-          {!isLoggedIn && (
+          ) : (
             <>
-              <Link to="/login" className="nav-link" onClick={closeMenu}>
-                Login
+              <Link to="/" className="nav-link" onClick={closeMenu}>
+                Home
               </Link>
-              <Link to="/register" className="nav-link" onClick={closeMenu}>
-                Register
+              <Link to="/pizzas" className="nav-link" onClick={closeMenu}>
+                Pizzas
               </Link>
+              {isLoggedIn && (
+                <>
+                  <Link to="/cart" className="nav-link" onClick={closeMenu}>
+                    Cart
+                  </Link>
+                  <Link to="/orders" className="nav-link" onClick={closeMenu}>
+                    Order
+                  </Link>
+                  <Link to="/contact" className="nav-link" onClick={closeMenu}>
+                    Contact
+                  </Link>
+                  <button onClick={handleLogout} className="nav-button">
+                    Logout
+                  </button>
+                </>
+              )}
+              {!isLoggedIn && (
+                <>
+                  <Link to="/login" className="nav-link" onClick={closeMenu}>
+                    Login
+                  </Link>
+                  <Link to="/register" className="nav-link" onClick={closeMenu}>
+                    Register
+                  </Link>
+                </>
+              )}
             </>
           )}
         </div>

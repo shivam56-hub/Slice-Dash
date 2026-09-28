@@ -50,7 +50,11 @@
   color: #777f8d;
   font-size: 0.9rem;
 }
-
+.order-date{
+  margin: 0.35rem 0 0;
+  color: #777f8d;
+  font: 0.78rem;
+}
 .order-header h3 {
   margin: 0;
   font-size: 0.94rem;
@@ -99,6 +103,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 2rem;
   padding-top: 1.2rem;
   border-top: 1px solid #2a2f3a;
 }
@@ -139,5 +144,12 @@
 @media (max-width: 600px) {
   .order-section {
     max-width: 100%;
+  }
+  .order-footer {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .order-total {
+    margin-left: auto;
   }
 }

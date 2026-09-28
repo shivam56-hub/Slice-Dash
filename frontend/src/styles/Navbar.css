@@ -108,7 +108,7 @@
 
 @media (max-width: 768px) {
   .navbar {
-    /* width: 100%; */
+    width: 95%;
     border-radius: none;
   }
   .hamburger {

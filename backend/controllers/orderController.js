@@ -111,7 +111,6 @@ const User = require("../models/User");
 //   }
 // };
 
-
 const createOrder = async (req, res) => {
   const userId = req.user.id;
   const { deliveryAddress, paymentMethod } = req.body;
@@ -159,7 +158,7 @@ const createOrder = async (req, res) => {
 
     const subTotal = cart.items.reduce(
       (total, item) => total + item.price * item.quantity,
-      0
+      0,
     );
 
     const deliveryFee = 50;
@@ -206,6 +205,24 @@ const createOrder = async (req, res) => {
   }
 };
 
+const getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find()
+    .populate("user", "name email phone")
+    .populate("items.pizza","name image");
+
+    return res.status(200).json({
+      success: true,
+      message: " All Orders found successfully.",
+      orders,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 const getOrders = async (req, res) => {
   const userId = req.user.id;
@@ -261,12 +278,53 @@ const getOrder = async (req, res) => {
     });
   }
 };
+const getOrderStats = async (req, res) => {
+  try {
+    const totalOrders = await Order.countDocuments();
+    const revenueResult = await Order.aggregate([
+      {
+        $match: {
+          orderStatus: {$ne: "Cancelled"},
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          totalRevenue: { $sum: "$totalAmount"}
+        },
+      },
+    ]);
+    const totalRevenue = revenueResult[0]?.totalRevenue || 0;
+
+     const pendingOrders = await Order.countDocuments({
+      orderStatus: {
+        $in: ["Placed", "Confirmed", "Preparing", "Out_for_delivery"],
+      },
+    });
+    const customers = await Order.distinct("user");
+    return res.status(200).json({
+      success: true,
+      stats: {
+        totalOrders,
+        totalRevenue,
+        totalCustomers: customers.length,
+        pendingOrders,
+      },
+    });
+  }catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 const updateOrder = async (req, res) => {
   const userId = req.user.id;
 
   // order status
   const { orderStatus } = req.body;
+
   if (!orderStatus) {
     return res.status(400).json({
       success: false,
@@ -276,11 +334,8 @@ const updateOrder = async (req, res) => {
 
   try {
     const order = await Order.findOneAndUpdate(
-      {
-        _id: req.params.id,
-        user: userId,
-      },
-      req.body,
+      { _id: req.params.id },
+      { orderStatus },
       {
         new: true,
         runValidators: true,
@@ -338,8 +393,10 @@ const deleteOrder = async (req, res) => {
 
 module.exports = {
   createOrder,
+  getAllOrders,
   getOrders,
   getOrder,
+  getOrderStats,
   updateOrder,
   deleteOrder,
 };

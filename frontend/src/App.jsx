@@ -12,22 +12,28 @@ import Orders from "./pages/Orders";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Contact from "./pages/Contact";
+import AIChatbot from "./components/AIChatbot";
+import AdminOrders from "./pages/AdminOrders";
+import AdminDashboard from "./pages/AdminDashboard";
 
 
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
+      <AIChatbot />
       <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/login" element={<Login/>}></Route>
-        <Route path="/register" element={<Register />}></Route>
-        <Route path="/pizzas" element={<Pizzas />}></Route>
-        <Route path="/pizzas/:id" element={<PizzDetails />}></Route>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login/>} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/pizzas" element={<Pizzas />} />
+        <Route path="/pizzas/:id" element={<PizzDetails />} />
         <Route path="/cart" element={<Cart />}></Route>
-        <Route path="/checkout" element={<Checkout />}></Route>
-        <Route path="/orders" element={<Orders />}></Route>
-        <Route path="/contact" element={<Contact />}></Route>
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/admin/orders" element={<AdminOrders />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
       <Footer />
     </BrowserRouter>
