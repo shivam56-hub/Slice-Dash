@@ -5,7 +5,16 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from config import ALLOWED_ORIGINS, SYSTEM_PROMPT, GROQ_MODEL
 from schemas import ChatRequest, ChatResponse
-from services import get_pizzas, get_pizza_by_name, add_to_cart, get_cart
+from services import (
+    get_pizzas, 
+    get_pizza_by_name, 
+    add_to_cart, 
+    get_cart, 
+    get_my_orders,
+    checkout,
+    cancel_order,
+    delete_order
+)
 from tools import client, tools
 
 app = FastAPI(title="PizzaBot AI Service")
@@ -33,6 +42,7 @@ def pizzas():
 @app.post("/api/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):
     print("Token exists:", request.token is not None)
+
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT}
     ]
@@ -40,56 +50,70 @@ def chat(request: ChatRequest):
     # Append chat history
     for msg in request.history:
         messages.append({
-            "role": msg.role, 
+            "role": msg.role,
             "content": msg.content
         })
 
     # Append new user message
     messages.append({
-        "role": "user", 
+        "role": "user",
         "content": request.message
     })
 
-    # First completion request to Groq
-    response = client.chat.completions.create(
-        model=GROQ_MODEL,
-        messages=messages,
-        tools=tools,
-        tool_choice="auto"
-    )
+    # Keep calling Groq until it gives a final text response
+    while True:
 
+        response = client.chat.completions.create(
+            model=GROQ_MODEL,
+            messages=messages,
+            tools=tools,
+            tool_choice="auto"
+        )
 
-    response_message = response.choices[0].message
-    tool_calls = response_message.tool_calls
+        response_message = response.choices[0].message
+        tool_calls = response_message.tool_calls
 
-    if tool_calls:
+        # No tool call = final answer
+        if not tool_calls:
+            final_text = response_message.content or ""
+            break
+
+        print("Tool calls received:")
+
+        # Add assistant tool-call message
+        messages.append(response_message)
+
+        # Execute every requested tool
         for tool_call in tool_calls:
-            print("Too called:", tool_call.function.name)
-            print("Arguments:", tool_call.function.arguments)
 
-    # Handle Function Call if requested by the model
-    if tool_calls:
-        messages.append(response_message)  # Add assistant's tool-call response to thread
-
-        for tool_call in tool_calls:
             function_name = tool_call.function.name
 
+            print("Tool called:", function_name)
+            print("Arguments:", tool_call.function.arguments)
+
             if function_name == "get_pizzas":
+
                 tool_result = get_pizzas()
 
             elif function_name == "get_pizza_by_name":
-                arguments = json.loads(tool_call.function.arguments)
+
+                arguments = json.loads(
+                    tool_call.function.arguments
+                )
 
                 tool_result = get_pizza_by_name(
                     arguments["pizza_name"]
                 )
 
             elif function_name == "add_to_cart":
-                arguments = json.loads(tool_call.function.arguments)
+
+                arguments = json.loads(
+                    tool_call.function.arguments
+                )
 
                 pizza_name = arguments["pizza_name"]
                 size = arguments["size"]
-                quantity = arguments["quantity"]    
+                quantity = arguments["quantity"]
 
                 tool_result = add_to_cart(
                     request.token,
@@ -97,42 +121,63 @@ def chat(request: ChatRequest):
                     size,
                     quantity
                 )
+
             elif function_name == "get_cart":
-                tool_result = get_cart(request.token)
-            # elif function_name == "get_my_orders":
-            #     arguments = json.loads(tool_call.function.arguments)
 
-            #     tool_result = get_my_orders(
-            #         request.token,
-            #         arguments["cart"]
-            #         arguments[""]
-            #     )
-                
+                tool_result = get_cart(
+                    request.token
+                )
 
+            elif function_name == "get_my_orders":
+
+                tool_result = get_my_orders(
+                    request.token
+                )
+            elif function_name == "checkout":
+                arguments = json.loads(
+                    tool_call.function.arguments
+                )
+
+                tool_result = checkout(
+                    request.token,
+                    arguments["delivery_address"],
+                    arguments["payment_method"]
+                )
+
+            elif function_name == "cancel_order":
+
+                arguments = json.loads(
+                    tool_call.function.arguments
+                )
+
+                tool_result = cancel_order(
+                    request.token,
+                    arguments["order_id"]
+                )
+            elif function_name == "delete_order":
+                arguments = json.loads(
+                    tool_call.function.arguments
+                )  
+                tool_result = delete_order(
+                    request.token,
+                    arguments["order_id"]
+                )  
 
             else:
-                tool_result ={
+               tool_result = {
                     "success": False,
                     "message": "Unknown tool"
-                }  
+                }
 
+            # Send tool result back to Groq
             messages.append({
                 "role": "tool",
                 "tool_call_id": tool_call.id,
                 "name": function_name,
-                "content": json.dumps(tool_result),
-            })       
-        
-        # Second completion request after supplying tool results
-        second_response = client.chat.completions.create(
-            model=GROQ_MODEL,
-            messages=messages,
-            tools=tools,
-            tool_choice="auto"
-        )
-        final_text = second_response.choices[0].message.content
-    else:
-        final_text = response_message.content
+                "content": json.dumps(tool_result)
+            })
 
-    return ChatResponse(response=final_text or "")
-  
+    return ChatResponse(
+        response=final_text
+    )
+ 

@@ -20,7 +20,7 @@ export default function AdminOrders() {
         return;
       }
       try {
-        const response = await fetch("http://localhost:5000/api/orders/admin", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/admin`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -43,7 +43,7 @@ export default function AdminOrders() {
       setUpdatingOrder(orderId);
 
       const response = await fetch(
-        `http://localhost:5000/api/orders/${orderId}`,
+        `${import.meta.env.VITE_API_URL}/api/orders/${orderId}`,
         {
           method: "PUT",
           headers: {

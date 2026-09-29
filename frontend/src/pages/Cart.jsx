@@ -14,7 +14,7 @@ export default function Cart() {
         if (!token) {
           throw new Error("Please login first.");
         }
-        const response = await fetch("http://localhost:5000/api/cart", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/cart`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -54,7 +54,7 @@ export default function Cart() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:5000/api/cart", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/cart`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +80,7 @@ export default function Cart() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:5000/api/cart/item", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/cart/item`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

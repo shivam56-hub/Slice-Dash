@@ -1,5 +1,6 @@
 import requests
 from config import PIZZA_API_URL
+from config import BACKEND_API_URL
 
 def get_pizzas() -> dict:
     """Fetch pizza menu from the backend API."""
@@ -96,7 +97,7 @@ def add_to_cart(token: str, pizza_name: str, size: str, quantity: int) -> dict:
 
     try:
         response = requests.post(
-            "http://localhost:5000/api/cart",
+            f"{BACKEND_API_URL}/api/cart",
             headers={
                 "Authorization": f"Bearer {token}",
                 "Content-Type": "application/json"
@@ -122,7 +123,7 @@ def get_cart(token: str) -> dict:
     """Fetch the logged-in user's cart.""" 
     try:
         response = requests.get(
-            "http://localhost:5000/api/cart",
+            f"{BACKEND_API_URL}/api/cart",
             headers={
                 "Authorization": f"Bearer {token}"
             },
@@ -135,3 +136,96 @@ def get_cart(token: str) -> dict:
             "success": False,
             "message": f"Error connecting to cart service: {str(e)}"
         }
+
+
+
+def get_my_orders(token: str) -> dict:
+    """Fetch the logged-in user's orders.""" 
+    try:
+        response = requests.get(
+            f"{BACKEND_API_URL}/api/orders",
+            headers={
+                "Authorization": f"Bearer {token}"
+            },
+            timeout=5
+        )
+
+        return response.json() 
+    except requests.RequestException as e:
+        return{
+            "success": False,
+            "message": f"Error connecting to order service: {str(e)}"
+        }    
+
+def checkout(
+    token: str,
+    delivery_address: dict,
+    payment_method: str
+) -> dict:
+    """Create an order for the logged-in user from their cart."""
+
+    try:
+        response = requests.post(
+            f"{BACKEND_API_URL}/api/orders",
+            headers={
+                "Authorization": f"Bearer {token}",
+                "Content-Type": "application/json"
+            },
+            json={
+                "deliveryAddress": delivery_address,
+                "paymentMethod": payment_method
+            },
+            timeout=5
+        )
+
+        return response.json()
+
+    except requests.RequestException as e:
+        return {
+            "success": False,
+            "message": f"Error connecting to checkout service: {str(e)}"
+        }
+
+def cancel_order(token: str, order_id: str) -> dict:
+    """Cancel the logged-in user's order."""
+
+    try:
+        response = requests.post(
+            f"{BACKEND_API_URL}/api/orders/{order_id}/cancel",
+            headers={
+                "Authorization": f"Bearer {token}"
+            },
+            timeout=5
+        )
+
+        return response.json()
+
+    except requests.RequestException as e:
+        return {
+            "success": False,
+            "message": f"Error connecting to order service: {str(e)}"
+        }    
+
+
+def delete_order(token: str, order_id: str) -> dict:
+    """Delete the logged-in user's order."""
+
+    try:
+        response = requests.delete(
+            f"{BACKEND_API_URL}/api/orders/{order_id}",
+            headers={
+                "Authorization": f"Bearer {token}"
+            },
+            timeout=5
+        )
+
+        return response.json()
+
+    except requests.RequestException as e:
+        return {
+            "success": False,
+            "message": f"Error connecting to order service: {str(e)}"
+        }    
+
+
+    

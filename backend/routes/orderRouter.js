@@ -6,6 +6,7 @@ const adminMiddleware = require("../middleware/adminMiddleware")
 const router = express.Router();
 
 router.post("/",authMiddleware, orderController.createOrder);
+router.post("/:id/cancel", authMiddleware, orderController.cancelOrder);
 router.get("/",authMiddleware, orderController.getOrders);
 router.get("/admin",authMiddleware, adminMiddleware, orderController.getAllOrders);
 router.get("/admin/stats",authMiddleware, adminMiddleware, orderController.getOrderStats);

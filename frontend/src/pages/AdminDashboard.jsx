@@ -18,7 +18,7 @@ export default function AdminDashboard() {
 
       try {
         const response = await fetch(
-          "http://localhost:5000/api/orders/admin/stats",
+          `${import.meta.env.VITE_API_URL}/api/orders/admin/stats`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

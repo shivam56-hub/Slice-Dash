@@ -16,7 +16,7 @@ export default function Orders() {
         return;
       }
       try {
-        const response = await fetch("http://localhost:5000/api/orders", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -50,6 +50,40 @@ export default function Orders() {
       </div>
     );
   }
+
+  const handleDeleteOrder = async (orderId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this order?",
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/orders/${orderId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to delete order");
+      }
+
+      // Remove deleted order from UI
+      setOrders((prevOrders) =>
+        prevOrders.filter((order) => order._id !== orderId),
+      );
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   return (
     <div className="order-section">
@@ -115,6 +149,14 @@ export default function Orders() {
                 <span>Total</span>
                 <strong>₹{order.totalAmount}</strong>
               </div>
+            </div>
+            <div className="delete-section">
+            <button
+              className="delete-btn"
+              onClick={() => handleDeleteOrder(order._id)}
+            >
+              Delete Order
+            </button>
             </div>
           </div>
         ))}

@@ -91,15 +91,113 @@ tools = [
     "function": {
         "name": "get_my_orders",
         "description": (
-            "Get the logged-in user's orders from SliceDash. "
-            "Use this when the user asks about their orders, "
-            "recent orders, order history, order status, "
-            "or wants to know what they ordered."
+            "Get all orders belonging to the currently logged-in user. "
+            "This tool requires no arguments. "
+            "Use it when the user asks about their orders, "
+            "recent orders, order history, or order status."
         ),
         "parameters": {
             "type": "object",
             "properties": {},
             "required": []
+        }
+    }
+},
+{
+    "type": "function",
+    "function": {
+        "name": "checkout",
+        "description": (
+            "Create an order from the logged-in user's cart. "
+            "Use this when the user explicitly wants to checkout, "
+            "place the order, or complete their purchase. "
+            "The user must provide delivery address and payment method."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "delivery_address": {
+                    "type": "object",
+                    "description": "Delivery address for the order.",
+                    "properties": {
+                        "fullname": {
+                            "type": "string"
+                        },
+                        "phone": {
+                            "type": "string"
+                        },
+                        "address": {
+                            "type": "string"
+                        },
+                        "city": {
+                            "type": "string"
+                        },
+                        "state": {
+                            "type": "string"
+                        },
+                        "pincode": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "fullname",
+                        "phone",
+                        "address",
+                        "city",
+                        "state",
+                        "pincode"
+                    ]
+                },
+                "payment_method": {
+                    "type": "string",
+                    "enum": ["Cash"]
+                }
+            },
+            "required": [
+                "delivery_address",
+                "payment_method"
+            ]
+        }
+    }
+},
+{
+    "type": "function",
+    "function": {
+        "name": "cancel_order",
+        "description": (
+            "Cancel a user's order on SliceDash. "
+            "Use this when the user explicitly asks to cancel an order."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "order_id": {
+                    "type": "string",
+                    "description": "The ID of the order to cancel."
+                }
+            },
+            "required": ["order_id"]
+        }
+    }
+},
+{
+    "type": "function",
+    "function": {
+        "name": "delete_order",
+        "description": (
+            "Delete a user's order from SliceDash. "
+            "Use this when the user explicitly asks to delete an order. "
+            "Do not use this tool when the user asks to cancel an order."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "order_id": {
+                    "type": "string",
+                    "description": "The ID of the order to delete."
+                }
+            },
+            "required": ["order_id"]
         }
     }
 }
