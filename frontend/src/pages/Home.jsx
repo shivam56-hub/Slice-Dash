@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getPizzas } from "../services/api";
 import "../styles/Home.css"
+import Spinner from "../loaders/Spinner";
 
 export default function Home() {
   const [pizzas, setPizzas] = useState([]);
@@ -22,7 +23,7 @@ export default function Home() {
   }, []);
 
   if (loading) {
-    return <h2>Loading Pizzas....</h2>;
+    return <Spinner />;
   }
   if (error) {
     return <h2>{error}</h2>;

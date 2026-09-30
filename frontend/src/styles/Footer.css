@@ -62,7 +62,6 @@
   gap: 24px;
 }
 
-
 .footer-link {
   color: #c9cdd5;
   text-decoration: none;
@@ -97,4 +96,7 @@
     justify-content: flex-start;
     gap: 16px 22px;
   }
-} 
+  .footer-link {
+    font-size: 0.9rem;
+  }
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/Cart.css";
+import Loader from "../loaders/Loader";
 
 export default function Cart() {
   const [cart, setCart] = useState(null);
@@ -36,7 +37,7 @@ export default function Cart() {
   }, []);
 
   if (loading) {
-    return <h2>Loading Pizzas....</h2>;
+    return <Loader />;
   }
   if (error) {
     return <h2>{error}</h2>;

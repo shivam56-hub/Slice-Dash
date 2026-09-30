@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import "../styles/AI-Services.css";
+import ChatTyping from "../loaders/ChatTyping";
 
 export default function AIChatbot() {
   const [IsOpen, setIsOpen] = useState(false);
@@ -85,7 +86,7 @@ export default function AIChatbot() {
                   <p>{msg.content}</p>
                 </div>
               ))}
-              {loading && <p className="loading-text">AI is thinking...</p>}
+              {loading && <span className="loading-text">AI is thinking<ChatTyping /></span>}
               <div ref={chatEndRef} />
             </div>
             <div className="input-section">

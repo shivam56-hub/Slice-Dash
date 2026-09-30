@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getPizzas } from "../services/api";
 import PizzaCard from "../components/PizzaCard";
 import "../styles/Pizzas.css"
+import Spinner from "../loaders/Spinner";
 
 
 
@@ -24,7 +25,7 @@ export default function Pizzas() {
     fetchPizzas();
   }, []);
   if (loading) {
-    return <h2>Loading Pizzas....</h2>;
+    return <Spinner /> ;
   }
   if (error) {
     return <h2>{error}</h2>;

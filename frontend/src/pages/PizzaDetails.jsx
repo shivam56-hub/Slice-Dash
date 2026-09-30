@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "../styles/PizzaDetails.css";
+import Loader from "../loaders/Loader";
 
 export default function PizzDetails() {
   const { id } = useParams();
@@ -37,7 +38,7 @@ export default function PizzDetails() {
   }, [id]);
 
   if (loading) {
-    return <h2>Loading Pizzas....</h2>;
+    return <Loader />;
   }
   if (error) {
     return <h2>{error}</h2>;

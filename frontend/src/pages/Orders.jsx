@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Orders.css";
+import Spinner from "../loaders/Spinner";
 
 export default function Orders() {
   const { token, isLoggedIn } = useAuth();
@@ -36,7 +37,7 @@ export default function Orders() {
   }, [token, isLoggedIn]);
 
   if (loading) {
-    return <h2>Loading orders...</h2>;
+    return <Spinner />;
   }
 
   if (error) {
