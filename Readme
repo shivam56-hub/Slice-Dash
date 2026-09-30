@@ -1,0 +1,115 @@
+# 🍕 SliceDash
+
+A full-stack pizza delivery application built using the MERN stack, with an AI-powered PizzaBot for menu, cart, order, cancellation, deletion, and checkout assistance.
+
+## 🚀 Live Demo
+
+Frontend: https://slice-dash.vercel.app/
+
+Backend API: https://slice-dash-backend.onrender.com
+
+AI Service: https://slice-dash-ai-services.onrender.com
+
+## ✨ Features
+
+### 👤 User
+- User registration and login
+- JWT authentication
+- Profile management
+- Address management
+- Browse available pizzas
+- Pizza search/filtering
+- Add pizzas to cart
+- Update cart quantity
+- Remove cart items
+- Checkout with Cash on Delivery
+- View order history
+- Cancel eligible orders
+- Delete orders
+
+### 👨‍💼 Admin
+- Admin authentication
+- Admin dashboard
+- View order statistics
+- View all orders
+- Update order status
+- Manage pizzas and categories
+
+### 🤖 PizzaBot
+- AI-powered pizza assistant
+- Real-time menu information
+- Pizza availability and pricing
+- Add pizzas to cart using natural language
+- View cart
+- View order history
+- Check order status
+- Cancel orders
+- Delete orders
+- Checkout assistance
+- Uses backend tools instead of inventing application data
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React.js
+- React Router
+- CSS
+- Vite
+
+### Backend
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT
+- bcrypt
+
+### AI Service
+- Python
+- FastAPI
+- Groq API
+- Function/tool calling
+
+### Deployment
+- Vercel
+- Render
+- MongoDB Atlas
+
+## 📁 Project Structure
+
+Slice-Dash/
+├── frontend/
+├── backend/
+├── AI-Services/
+└── README.md
+
+## 🔐 Authentication
+
+JWT-based authentication is used to protect user and admin routes.
+
+Passwords are hashed using bcrypt before being stored.
+
+## 🤖 AI Architecture
+
+The PizzaBot uses an AI service built with FastAPI.
+
+The AI can call application tools such as:
+
+- get_pizzas
+- get_pizza_by_name
+- add_to_cart
+- get_cart
+- get_my_orders
+- cancel_order
+- delete_order
+- checkout
+
+The tools communicate with the SliceDash backend API to retrieve or modify real application data.
+
+## 📌 Future Improvements
+
+- Razorpay payment integration
+- Coupon support in checkout
+- More advanced admin management
+- Improved AI conversation handling
+- Order notifications

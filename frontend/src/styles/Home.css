@@ -158,6 +158,9 @@
     padding-left: 18px;
     padding-right: 18px;
   }
+  .home-hero h1 {
+    font-size: 2rem;
+  }
 
   .home-hero {
     padding: 60px 0 45px;
