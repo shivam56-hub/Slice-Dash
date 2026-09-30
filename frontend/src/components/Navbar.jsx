@@ -44,6 +44,9 @@ export default function Navbar() {
               <Link to="/admin/orders" className="nav-link" onClick={closeMenu}>
                 Orders
               </Link>
+              <Link to="/admin/pizzas/add" className="nav-link" onClick={closeMenu}>
+                Add Pizza 
+              </Link>
               <button onClick={handleLogout} className="nav-button">
                 Logout
               </button>

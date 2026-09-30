@@ -15,6 +15,7 @@ import Contact from "./pages/Contact";
 import AIChatbot from "./components/AIChatbot";
 import AdminOrders from "./pages/AdminOrders";
 import AdminDashboard from "./pages/AdminDashboard";
+import AddPizza from "./pages/AddPizza";
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/admin/orders" element={<AdminOrders />} />
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/pizzas/add" element={<AddPizza />} />
       </Routes>
       <Footer />
     </BrowserRouter>
